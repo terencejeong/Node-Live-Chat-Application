@@ -27,7 +27,7 @@ socket.on('newMessage', function(message) {
 //   console.log('Got it!', data)
 // })
 
-// new location message listener/handler. 
+// new location message listener/handler.
 socket.on('newLocationMessage', function(message){
   var li = jQuery('<li></li>');
   var a = jQuery('<a target="_blank">My current location</a>');
@@ -39,15 +39,17 @@ socket.on('newLocationMessage', function(message){
   jQuery('#messages').append(li);
 });
 
+var messageTextBox = jQuery('[name=message]')
 jQuery('#message-form').on('submit', function(e) {
   // prevents default search query.
   e.preventDefault();
   // emits the event.
   socket.emit('createMessage', {
     from: 'User',
-    text: jQuery('[name=message]').val()
+    text: messageTextBox.val()
   }, function () {
-
+    // this will clear the text box.
+    messageTextBox.val('')
   });
 });
 
@@ -56,13 +58,21 @@ locationButton.on('click', function() {
   if(!navigator.geolocation){
     return alert('Geolocation not supported by your browser.');
   }
+
+// so client cannot spam send location button.
+  locationButton.attr('disabled', 'disabled').text('Sending location...');
+
   navigator.geolocation.getCurrentPosition(function(position) {
+    // will re-enable button after success
+    locationButton.removeAttr('disabled').text('Send location')
     console.log(position)
     socket.emit('createLocationMessage', {
       latitude: position.coords.latitude,
       longitude: position.coords.longitude
     });
   }, function () {
+      // will re-enable button after failure.
+      locationButton.removeAttr('disabled').text('Send location')
     alert('Unable to fetch location.')
   });
 });

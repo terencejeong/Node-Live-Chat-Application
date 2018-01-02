@@ -30,10 +30,11 @@ io.on('connection', (socket) => {
     console.log('createMessage', message);
     io.emit('newMessage', generateMessage(message.from, message.text));
     // this callback is being passed to the socket.emit on createMessage as 'data' placeholder.
-    callback('This is from the server');
+    // callback('This is from the server');
+    callback(); 
   });
 
-  // listens to creatLocationMessage 
+  // listens to creatLocationMessage
   socket.on('createLocationMessage', (coords) => {
     io.emit('newLocationMessage', generateLocationMessage('Admin', coords.latitude, coords.longitude))
   })
