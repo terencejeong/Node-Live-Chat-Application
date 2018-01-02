@@ -18,23 +18,27 @@ io.on('connection', (socket) => {
   console.log('new user connected');
 
 // listening to event on clients side.
+// socket.emit emits and event to a single connection
+// io.emit emits and event to every connection.
   socket.on('createMessage', (message) =>{
-    console.log('createMessage', message)
-  })
+    console.log('createMessage', message);
+    io.emit('newMessage', {
+      from: message.from,
+      text: message.text,
+      createdAt: new Date().getTime()
+    })
+  });
 //emitting an event to server side.
-  socket.emit('newMessage', {
-    from: 'terry',
-    message: 'this is me messaging you',
-    createdAt: 1234
-  })
-
-
+  // socket.emit('newMessage', {
+  //   from: 'terry',
+  //   text: 'this is me messaging you',
+  //   createdAt: 1234
+  // })
+  
   socket.on('disconnect', () => {
     console.log('disconnected from server')
   });
 });
-
-
 
 server.listen(port, () => {
   console.log(`Started on ${port}`);

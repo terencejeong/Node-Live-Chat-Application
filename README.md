@@ -6,6 +6,7 @@ Firstly, had to set up the server.
 - installed socketIO
 - installed express
 
+Also required the constants path and http
 
 ## Step 2
 
