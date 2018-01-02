@@ -27,6 +27,7 @@ socket.on('newMessage', function(message) {
 //   console.log('Got it!', data)
 // })
 
+// new location message listener/handler. 
 socket.on('newLocationMessage', function(message){
   var li = jQuery('<li></li>');
   var a = jQuery('<a target="_blank">My current location</a>');
