@@ -17,3 +17,6 @@ After setting up the server, we went to localhost:3000/socket.io/socket.io.js
 This was then added as a script tag to the index.html file.
 
 ## Step 3 - Listening to and emitting events.
+
+
+## Step 4 Broadcasting

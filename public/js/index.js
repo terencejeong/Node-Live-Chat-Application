@@ -5,13 +5,7 @@ var socket =  io();
 //want to listen for an event
 socket.on('connect', function () {
   console.log('connected to server')
-}); 
-//emitting event to server side
-// socket.emit('createMessage', {
-//   from: 'john@mail.com',
-//   text: 'Hi mr server.'
-//   })
-// });
+});
 
 socket.on('disconnect', function () {
   console.log('disconnected from server')
@@ -21,7 +15,12 @@ socket.on('newMessage', function(message) {
   console.log('New Message', message )
 })
 
-
+//emitting event to server side
+// socket.emit('createMessage', {
+//   from: 'john@mail.com',
+//   text: 'Hi mr server.'
+//   })
+// });
 
 // emits to the server, from the client. - relationship with server.
 //   socket.emit('createEmail', {

@@ -17,6 +17,18 @@ app.use(express.static(publicPath))
 io.on('connection', (socket) => {
   console.log('new user connected');
 
+  // socket.emit from Admin
+  socket.emit('newMessage', {
+    from: 'Admin',
+    text: 'Welcome to the Chat App',
+    createdAt: new Date().getTime()
+  })
+  // socket.broadcast.emit from Admin text: New User Joined.
+  socket.broadcast.emit('newMessage', {
+    from: 'Admin',
+    text: 'New User has joined the chat room',
+    createdAt: new Date().getTime()
+  })
 // listening to event on clients side.
 // socket.emit emits and event to a single connection
 // io.emit emits and event to every connection.
@@ -27,14 +39,14 @@ io.on('connection', (socket) => {
       text: message.text,
       createdAt: new Date().getTime()
     })
+    // socket.broadcast.emit('newMessage', {
+    //   from: message.from,
+    //   text: message.text,
+    //   createdAt: new Date().getTime()
+    // })
   });
-//emitting an event to server side.
-  // socket.emit('newMessage', {
-  //   from: 'terry',
-  //   text: 'this is me messaging you',
-  //   createdAt: 1234
-  // })
-  
+
+
   socket.on('disconnect', () => {
     console.log('disconnected from server')
   });
@@ -45,6 +57,13 @@ server.listen(port, () => {
 });
 
 module.exports = {app};
+
+//emitting an event to server side.
+  // socket.emit('newMessage', {
+  //   from: 'terry',
+  //   text: 'this is me messaging you',
+  //   createdAt: 1234
+  // })
 
   // socket.emit('newEmail', {
   //   from: "terry@mail.com",
