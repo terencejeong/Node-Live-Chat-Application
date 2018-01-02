@@ -13,8 +13,30 @@ socket.on('disconnect', function () {
 //listening to event on server side.
 socket.on('newMessage', function(message) {
   console.log('New Message', message )
+  var li = jQuery("<li></li>");
+  li.text(`${message.from}: ${message.text}`)
+
+  jQuery('#messages').append(li);
+
 })
 
+// socket.emit('createMessage', {
+//   from: 'Syaf',
+//   text: "hi"
+// }, function(data) {
+//   console.log('Got it!', data)
+// })
+
+jQuery('#message-form').on('submit', function(e) {
+  e.preventDefault();
+
+  socket.emit('createMessage', {
+    from: 'User',
+    text: jQuery('[name=message]').val()
+  }, function () {
+
+  });
+});
 //emitting event to server side
 // socket.emit('createMessage', {
 //   from: 'john@mail.com',

@@ -19,16 +19,17 @@ io.on('connection', (socket) => {
   console.log('new user connected');
 
   // socket.emit from Admin
-  socket.emit('newMessage', generateMessage('Admin', 'Welcome to the Chat Aoo'));
+  socket.emit('newMessage', generateMessage('Admin', 'Welcome to the Chat App'));
   // socket.broadcast.emit from Admin text: New User Joined.
   socket.broadcast.emit('newMessage', generateMessage('Admin', 'New user joined'));
 
 // listening to event on clients side.
 // socket.emit emits and event to a single connection
 // io.emit emits and event to every connection.
-  socket.on('createMessage', (message) =>{
+  socket.on('createMessage', (message, callback) =>{
     console.log('createMessage', message);
     io.emit('newMessage', generateMessage(message.from, message.text));
+    callback('This is from the server');
   });
 
   socket.on('disconnect', () => {

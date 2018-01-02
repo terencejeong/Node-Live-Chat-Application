@@ -35,6 +35,7 @@ On the server.js we emitted an event
 This was listened to on the client side, on index.js
 
 ```js
+
 // custom events.
 socket.on('newEmail', function (email) {
   console.log('New email', email);
@@ -58,7 +59,6 @@ socket.emit('createMessage', {
 
 ```
 On the server.js file we were listening for the event
-
 ```js
 socket.on('createMessage', (message) =>{
   console.log('createMessage', message);
@@ -102,8 +102,9 @@ io.on('connection', (socket) => {
   });
 
   server.listen(port, () => {
-    console.log(`Started on ${port}`);
+    console.log('Started on port');
   });
-
-  module.exports = {app};
 ```
+## Step 5 - Event Acknowledgements
+
+- Is the message data valid? 
