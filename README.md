@@ -67,7 +67,14 @@ socket.on('createMessage', (message) =>{
 As you can see the patterns are identical.
 
 
-## Step 4 Broadcasting
+## Step 4 - Broadcasting
+
+Broadcasting is important as this will broadcast the event, which means that the event will be broadcast to everyone else but the the current user.
+
+In the code below, on the socket.broadcast.emit function, when someone signs in, everyone in the chat room will see that 'New User has joined the Chat.'
+
+This is different to io.emit which shares the event with everyone.
+
 ```js
 //io.on lets you register an event listener
 io.on('connection', (socket) => {
@@ -105,6 +112,50 @@ io.on('connection', (socket) => {
     console.log('Started on port');
   });
 ```
+
 ## Step 5 - Event Acknowledgements
 
-- Is the message data valid? 
+Acknowledgements will allow the request listener to send something back to the request emitter.
+
+Firstly, we created a new method called generateMessage. This was so we do not have to repeat the from, text and createdAt object.
+
+In the server folder we created a Utils folder and then a message.js file.
+
+Within the message.js folder we created the generateMessage method.
+
+```js
+var generateMessage = (from, text) => {
+  return {
+    from,
+    text,
+    createdAt: new Date().getTime()
+  }
+};
+
+module.exports = {generateMessage}
+```
+
+This was then added to the server.js file where we had all the from, text and createdAt. Below is an example for the 'createMessage' event listener.
+
+```js
+socket.on('createMessage', (message, callback) =>{
+  console.log('createMessage', message);
+  io.emit('newMessage', generateMessage(message.from, message.text));
+  // this callback is being passed to the socket.emit on createMessage as 'data' placeholder.
+  callback('This is from the server');
+});
+```
+
+An interesting thing here is that we are now acknowledging the event by creating that third arguement called 'callback'
+
+This is being passed to the socket.emit on createMessage in the index.js file.
+
+```js
+socket.emit('createMessage', {
+  from: 'Syaf',
+  text: "hi"
+}, function(data) {
+  console.log('Got it!', data)
+})
+```
+The callback is being passed as 'data' and we will get the log, 'Got it! This is from the server'

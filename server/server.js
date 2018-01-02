@@ -29,8 +29,13 @@ io.on('connection', (socket) => {
   socket.on('createMessage', (message, callback) =>{
     console.log('createMessage', message);
     io.emit('newMessage', generateMessage(message.from, message.text));
+    // this callback is being passed to the socket.emit on createMessage as 'data' placeholder.
     callback('This is from the server');
   });
+
+  socket.on('createLocationMessage', (coords) => {
+    io.emit('newMessage', generateMessage('Admin', `${coords.latitude}, ${coords.longitude}`))
+  })
 
   socket.on('disconnect', () => {
     console.log('disconnected from server')
