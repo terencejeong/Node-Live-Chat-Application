@@ -159,3 +159,69 @@ socket.emit('createMessage', {
 })
 ```
 The callback is being passed as 'data' and we will get the log, 'Got it! This is from the server'
+
+## Step 6 - Message Form and JQuery.
+
+Added the form as well as the JQuery to the HTML Doc.
+
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+  <p> the chat app </p>
+
+  <ol id="messages">
+  </ol>
+
+  <form id="message-form">
+    <input name="message" type="text" placeholder="Message"/>
+    <button> Send </button>
+  </form>
+
+  <button id="send-location"> Send Location </button>
+
+  <script src="/socket.io/socket.io.js"> </script>
+  <script src="/js/libs/jquery-3.2.1.min.js"></script>
+  <script src="/js/index.js"></script>
+  </body>
+</html>
+```
+Now, we needed to create the JQuery functions for the events. In the index.js we added the following
+
+```js
+jQuery('#message-form').on('submit', function(e) {
+  // prevents default search query.
+  e.preventDefault();
+  // emits the event.
+  socket.emit('createMessage', {
+    from: 'User',
+    text: jQuery('[name=message]').val()
+  }, function () {
+
+  });
+});
+```
+This says that on submit on the message form button (the id is targeted). We will firstly prevent the default, which is to put the text into a search query. We will then emit the event and create a message. This is being listened to in the server.js
+
+Created another JQuery function that will render the message to the browser.
+
+In the index.js file the following was added
+
+```js
+//listening to event on server side.
+socket.on('newMessage', function(message) {
+  console.log('New Message', message )
+  var li = jQuery("<li></li>");
+  li.text(`${message.from}: ${message.text}`)
+
+  jQuery('#messages').append(li);
+
+})
+```
+This is listening to the event on the server side as shown previously in step 5.
+
+## Step 7 - Geolocation
