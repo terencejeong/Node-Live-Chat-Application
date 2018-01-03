@@ -1,5 +1,8 @@
 # A simple live chat application using Sockets.io.
 
+A completed link to the project can be found on the link below!
+
+#### [Live Chat Room using Sockets](https://glacial-fortress-35407.herokuapp.com/)
 ## Step 1
 Firstly, had to set up the server.
 

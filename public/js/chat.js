@@ -43,7 +43,7 @@ socket.on('disconnect', function () {
 });
 
 socket.on('updateUserList', function (users) {
-  // jQuery for names.
+  // jQuery for names on sidebar. To show who is in the chatroom. 
    var ol = jQuery('<ol></ol>');
 
    users.forEach(function(user) {
@@ -105,7 +105,6 @@ jQuery('#message-form').on('submit', function(e) {
   e.preventDefault();
   // emits the event.
   socket.emit('createMessage', {
-    from: 'User',
     text: messageTextBox.val()
   }, function () {
     // this will clear the text box.
