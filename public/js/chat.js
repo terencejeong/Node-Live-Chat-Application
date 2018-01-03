@@ -16,17 +16,40 @@ function scrollToBottom () {
   var lastMessageHeight = newMessage.prev().innerHeight();
 
   if (clientHeight + scrollTop + newMessageHeight + lastMessageHeight >= scrollHeight) {
-// jQuery methods vreated above. 
+// jQuery methods vreated above.
     messages.scrollTop(scrollHeight)
   }
 }
 //want to listen for an event
 socket.on('connect', function () {
-  console.log('connected to server')
+  console.log('connected to server');
+  // from our deparam library.
+  var params = jQuery.deparam(window.location.search);
+  // now can emit an event and set up an acknowledgement
+  socket.emit('join', params, function(err) {
+    if (err) {
+      // redirect them to root page if error.
+      alert(err);
+      window.location.href = '/'
+    } else {
+      console.log('No Error')
+    }
+  })
+
 });
 
 socket.on('disconnect', function () {
   console.log('disconnected from server')
+});
+
+socket.on('updateUserList', function (users) {
+  // jQuery for names.
+   var ol = jQuery('<ol></ol>');
+
+   users.forEach(function(user) {
+      ol.append(jQuery('<li></li>').text(user))
+   });
+   jQuery('#users').html(ol)
 });
 //listening to event on server side.
 socket.on('newMessage', function(message) {
