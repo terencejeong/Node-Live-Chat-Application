@@ -2,6 +2,24 @@
 // actually initiating request. Making request from client to server to open up a web socket and keep connection open.
 var socket =  io();
 
+// autoscroll calculations.
+function scrollToBottom () {
+  // selectors
+  var messages = jQuery('#messages');
+  // will store selector for the last list item. One just before scrollToBottom
+  var newMessage = messages.children('li:last-child')
+  // heights
+  var clientHeight = messages.prop('clientHeight');
+  var scrollTop = messages.prop('scrollTop');
+  var scrollHeight = messages.prop('scrollHeight');
+  var newMessageHeight = newMessage.innerHeight();
+  var lastMessageHeight = newMessage.prev().innerHeight();
+
+  if (clientHeight + scrollTop + newMessageHeight + lastMessageHeight >= scrollHeight) {
+// jQuery methods vreated above. 
+    messages.scrollTop(scrollHeight)
+  }
+}
 //want to listen for an event
 socket.on('connect', function () {
   console.log('connected to server')
@@ -21,6 +39,7 @@ socket.on('newMessage', function(message) {
   });
 
   jQuery('#messages').append(html);
+  scrollToBottom();
 })
   //how we had it before mustache.
   // var li = jQuery("<li></li>");
@@ -47,6 +66,7 @@ socket.on('newLocationMessage', function(message){
     createdAt: formattedTime
   });
   jQuery('#messages').append(html);
+  scrollToBottom();
   });
     // var li = jQuery('<li></li>');
     // var a = jQuery('<a target="_blank">My current location</a>');
@@ -69,7 +89,7 @@ jQuery('#message-form').on('submit', function(e) {
     messageTextBox.val('')
   });
 });
-// function for geolocation button. 
+// function for geolocation button.
 var locationButton = jQuery('#send-location')
 locationButton.on('click', function() {
   if(!navigator.geolocation){
